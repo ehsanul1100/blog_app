@@ -7,9 +7,10 @@ import 'package:gap/gap.dart';
 
 class LoginPage extends StatefulWidget {
   static route() => MaterialPageRoute(
-                    builder: (context) {
-                      return const LoginPage();
-                    },);
+        builder: (context) {
+          return const LoginPage();
+        },
+      );
   const LoginPage({super.key});
 
   @override
@@ -53,11 +54,12 @@ class _LoginPageState extends State<LoginPage> {
               Gap(20),
               AuthGradientButton(
                 buttonText: 'Sign In',
+                onPressed: () {},
               ),
               Gap(20),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,SignupPage.route());
+                  Navigator.push(context, SignupPage.route());
                 },
                 child: RichText(
                     text: TextSpan(

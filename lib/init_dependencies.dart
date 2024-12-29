@@ -1,6 +1,8 @@
+import 'package:blog_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_app/features/auth/data/datasources/auth_remote_data_sources.dart';
 import 'package:blog_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
+import 'package:blog_app/features/auth/domain/usecases/current_user.dart';
 import 'package:blog_app/features/auth/domain/usecases/user_login.dart';
 import 'package:blog_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:blog_app/features/auth/presentation/bloc/auth_bloc.dart';
@@ -22,16 +24,26 @@ Future<void> _initFirebase() async {
   serviceLocator.registerLazySingleton(
     () => firebaseFirestore,
   );
+
+  //core
+
+  serviceLocator.registerLazySingleton(
+    () => AppUserCubit(),
+  );
 }
 
 void _initAuth() {
   serviceLocator.registerFactory<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(
-        firebaseAuth: serviceLocator(), firebaseFirestore: serviceLocator()),
+      firebaseAuth: serviceLocator(),
+      firebaseFirestore: serviceLocator(),
+    ),
   );
 
   serviceLocator.registerFactory<AuthRepository>(
-    () => AuthRepositoryImpl(remoteDataSource: serviceLocator()),
+    () => AuthRepositoryImpl(
+      remoteDataSource: serviceLocator(),
+    ),
   );
 
   serviceLocator.registerFactory(
@@ -46,8 +58,18 @@ void _initAuth() {
     ),
   );
 
+  serviceLocator.registerFactory(
+    () => CurrentUser(
+      authRepository: serviceLocator(),
+    ),
+  );
   serviceLocator.registerLazySingleton(
-    () => AuthBloc(userSignUp: serviceLocator(), userLogin: serviceLocator()),
+    () => AuthBloc(
+      userSignUp: serviceLocator(),
+      userLogin: serviceLocator(),
+      currentUser: serviceLocator(),
+      appUserCubit: serviceLocator(),
+    ),
   );
 }
 // Compare this snippet from lib/features/auth/data/repositories/auth_repository.dart:

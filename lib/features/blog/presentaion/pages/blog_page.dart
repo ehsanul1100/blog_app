@@ -1,3 +1,4 @@
+import 'package:blog_app/features/blog/presentaion/pages/add_new_blog_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,9 @@ class BlogPage extends StatelessWidget {
           IconButton(
             icon: const Icon(CupertinoIcons.add_circled),
             onPressed: () {
-              // context.read<AuthBloc>().add(AuthLoggedOut());
+              Navigator.of(context).push(
+                AddNewBlogPage.route(),
+              );
             },
           )
         ],

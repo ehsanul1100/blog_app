@@ -9,6 +9,7 @@ class BlogModel extends Blog {
     required super.imageUrl,
     required super.topics,
     required super.updateAt,
+    super.posterName,
   });
 
   Map<String, Object> toJson() {
@@ -31,9 +32,31 @@ class BlogModel extends Blog {
       content: map['content'] as String,
       imageUrl: map['image_url'] as String,
       topics: List<String>.from(
-        (map['topics'] as List<String>),
+        (map['topics']),
       ),
       updateAt: map['update_at'] as String,
+    );
+  }
+
+  BlogModel copyWith({
+    String? id,
+    String? posterId,
+    String? title,
+    String? content,
+    String? imageUrl,
+    List<String>? topics,
+    String? updateAt,
+    String? posterName,
+  }) {
+    return BlogModel(
+      id: id ?? this.id,
+      posterId: posterId ?? this.posterId,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      imageUrl: imageUrl ?? this.imageUrl,
+      topics: topics ?? this.topics,
+      updateAt: updateAt ?? this.updateAt,
+      posterName: posterName ?? this.posterName,
     );
   }
 }

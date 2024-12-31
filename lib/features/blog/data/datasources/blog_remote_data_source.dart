@@ -10,6 +10,7 @@ abstract interface class BlogRemoteDataSource {
     required File image,
     required BlogModel blog,
   });
+  Future<List<BlogModel>> getAllBlogs();
 }
 
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
@@ -37,6 +38,23 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   }) async {
     try {
       return 'images/blog_image.jpg';
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<List<BlogModel>> getAllBlogs() async {
+    try {
+      final blogs = await firebaseFirestore.collection('blogs').get();
+      final List<QueryDocumentSnapshot<Map<String, dynamic>>> blogsData =
+          blogs.docs;
+      return blogsData
+          .map(
+            (blog) =>
+                BlogModel.fromJson(blog.data()).copyWith(posterName: 'Shihab'),
+          )
+          .toList();
     } catch (e) {
       throw ServerException(message: e.toString());
     }

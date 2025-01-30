@@ -51,8 +51,10 @@ class _BlogPageState extends State<BlogPage> {
         },
         builder: (context, state) {
           if (state is BlogLoading) {
+            debugPrint('loader');
             return const Loader();
           } else if (state is BlogDisplaySuccess) {
+            debugPrint('Blog success');
             return ListView.builder(
               itemCount: state.blogs.length,
               itemBuilder: (context, index) {
